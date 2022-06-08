@@ -47,7 +47,10 @@ def submit_promotioncode_api_view(request):
         serializers = PromotionCodeSerializer(promotion, data, many=False)
         serializers.is_valid(raise_exception=True)
         serializers.save()
-        return Response(serializers.data)
+        return Response(
+            {"success":"Your information has been saved."},
+            status=status.HTTP_200_OK
+        )
 
 
 @api_view(["POST"])
