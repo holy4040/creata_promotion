@@ -3,31 +3,36 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.utils.translation import gettext_lazy as _
 
+
 class CustomUserManager(BaseUserManager):
     def email_validator(self, email):
         try:
             validate_email(email)
         except ValidationError:
-            raise ValueError(_('Please provide a valid email.'))
+            raise ValueError(_("Please provide a valid email."))
 
-    def create_user(self, email, first_name, last_name, phone_number, password, **extra_fields):
-        
+    def create_user(
+        self, username, email, first_name, last_name, phone_number, password, **extra_fields
+    ):
+        if not username:
+            raise ValueError(_('Users must submit a username'))
         if not first_name:
-            raise ValueError(_('Users must submit a first name'))
+            raise ValueError(_("Users must submit a first name"))
         if not last_name:
-            raise ValueError(_('Users must submit a last name'))
+            raise ValueError(_("Users must submit a last name"))
         if not phone_number:
-            raise ValueError(_('Users must submit a phone number'))
+            raise ValueError(_("Users must submit a phone number"))
         if email:
             email = self.normalize_email(email)
             self.email_validator(email)
         else:
-            raise ValueError(_('An email address is required'))
-        
+            raise ValueError(_("An email address is required"))
+
         user = self.model(
-            email=email, 
-            first_name=first_name, 
-            last_name=last_name, 
+            username=username, 
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
             phone_number=phone_number,
             **extra_fields
         )
@@ -38,25 +43,29 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, first_name, last_name, phone_number, password, **extra_fields):
-        extra_fields.setdefault('is_staff',True)
-        extra_fields.setdefault('is_superuser',True)
-        extra_fields.setdefault('is_active',True)
+    def create_superuser(
+        self, username, email, first_name, last_name, phone_number, password, **extra_fields
+    ):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
         if extra_fields.get("is_staff") is not True:
             raise ValueError(_("Superuser must have is_staff=True"))
-        
+
         if extra_fields.get("is_superuser") is not True:
             raise ValueError(_("Superuser must have is_superuser=True"))
-        
+
         if not password:
             raise ValueError(_("Superuser must have a password"))
-        
+
         if email:
             email = self.normalize_email(email)
             self.email_validator(email)
         else:
             raise ValueError(_("Admin account: An email address is required"))
-        
-        user = self.create_user(email, first_name, last_name, phone_number, password, **extra_fields)
+
+        user = self.create_user(
+            username, email, first_name, last_name, phone_number, password, **extra_fields
+        )
         user.save(using=self._db)
         return user
