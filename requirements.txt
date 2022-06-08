@@ -51,3 +51,7 @@ sqlparse==0.4.2
 toml==0.10.2
 uritemplate==4.1.1
 urllib3==1.26.9
+redis==3.5.3
+celery==4.4.7
+flower==0.9.7
+django-celery-email==3.0.0
