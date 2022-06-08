@@ -4,7 +4,7 @@ import os
 from celery import Celery
 from promotion.settings import base
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "real_estate.settings.development")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "promotion.settings.development")
 
 app = Celery("promotion")
 
