@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "5b149a9c-4c0f-4358-845d-25411723194c",
+		"name": "creata_promo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create promotion code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU0NTg0ODkxLCJqdGkiOiJhZDFjNjVmYmJmYjc0YzAxOTliYzBjZDY3NzFlMWM2OCIsInVzZXJfaWQiOiJiYzMxMDhmZC00YWVkLTQ0ZjItODQ4My0xMmVmOWM2YTU5NDEifQ.frMn7rg5uwLoBGzkF1UpvTFFFlAWFsC4ljpULZG1YKw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "promo_code",
+							"value": "XH4Z5946",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/api/v1/promotioncode/create/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"promotioncode",
+						"create",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "submit promotion code",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "promo_code",
+							"value": "XH4Z5946",
+							"type": "default"
+						},
+						{
+							"key": "email",
+							"value": "creata@gmail.com",
+							"type": "default"
+						},
+						{
+							"key": "first_name",
+							"value": "Z",
+							"type": "default"
+						},
+						{
+							"key": "last_name",
+							"value": "Q",
+							"type": "default"
+						},
+						{
+							"key": "phone_number",
+							"value": "0413212332",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/api/v1/promotioncode/submit/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"promotioncode",
+						"submit",
+						""
+					],
+					"query": [
+						{
+							"key": "promo_code",
+							"value": "ZVLJCYT",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "admin@creata.com",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "creata",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/api/v1/auth/jwt/create",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"jwt",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "select winner",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU0NTg0ODkxLCJqdGkiOiJhZDFjNjVmYmJmYjc0YzAxOTliYzBjZDY3NzFlMWM2OCIsInVzZXJfaWQiOiJiYzMxMDhmZC00YWVkLTQ0ZjItODQ4My0xMmVmOWM2YTU5NDEifQ.frMn7rg5uwLoBGzkF1UpvTFFFlAWFsC4ljpULZG1YKw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8080/api/v1/promotioncode/winner-selection/ZVLJCYTG",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"promotioncode",
+						"winner-selection",
+						"ZVLJCYTG"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all promotion code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU0NTkyMTYyLCJqdGkiOiI5MDY2ZWQ0ZDM4YTM0MThlOWM1ZjQyMGI4YmNlMDE4MiIsInVzZXJfaWQiOiJiYzMxMDhmZC00YWVkLTQ0ZjItODQ4My0xMmVmOWM2YTU5NDEifQ.CGjmIt0OHHF4KHy3-Z4UFBTU2ibQaYcah9votSG5LUU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8080/api/v1/promotioncode/all",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"promotioncode",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all participants",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU0NTkyMTYyLCJqdGkiOiI5MDY2ZWQ0ZDM4YTM0MThlOWM1ZjQyMGI4YmNlMDE4MiIsInVzZXJfaWQiOiJiYzMxMDhmZC00YWVkLTQ0ZjItODQ4My0xMmVmOWM2YTU5NDEifQ.CGjmIt0OHHF4KHy3-Z4UFBTU2ibQaYcah9votSG5LUU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8080/api/v1/promotioncode/all-participants",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"promotioncode",
+						"all-participants"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
