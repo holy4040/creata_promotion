@@ -73,7 +73,6 @@ services:
     restart: always
     depends_on:
       - api
-      - client
     build:
       context: ./docker/local/nginx
       dockerfile: Dockerfile
