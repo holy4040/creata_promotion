@@ -77,7 +77,7 @@ def promotion_winner_selection_api_view(request, slug):
         raise PromotionCodeNotFound
 
     # check all promotion code is redeemed
-    has_code_not_redeemed = PromotionCode.objects.filter(email="").count()
+    has_code_not_redeemed = PromotionCode.objects.filter(email__isnull=True).count()
     if has_code_not_redeemed:
         return Response(
             {"error": "The competition is not completed yet."},
