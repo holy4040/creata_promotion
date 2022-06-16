@@ -1,14 +1,13 @@
 import datetime
 import logging
-
 from django.db.models import Count
 from rest_framework import permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-
-from .exceptions import PromotionCodeNotFound
+from .exceptions import PromotionCodeNotFound,PromotionCodeEmailNotFound
 from .models import PromotionCode
 from .serializers import PromotionCodeCreateSerializer, PromotionCodeSerializer
+from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
@@ -68,14 +67,16 @@ def create_promotion_code_api_view(request):
     return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["PUT"])
+@api_view(["POST"])
 @permission_classes([permissions.IsAuthenticated])
-def promotion_winner_selection_api_view(request, slug):
-    try:
-        promotion = PromotionCode.objects.get(promo_code=slug)
-    except PromotionCode.DoesNotExist:
-        raise PromotionCodeNotFound
-
+def promotion_winner_selection_api_view(request):
+    # check winner alread exists
+    has_winner = PromotionCode.objects.filter(is_winner=True).count()
+    if has_winner:
+        return Response(
+            {"error": "The lucky winner has been chosen."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
     # check all promotion code is redeemed
     has_code_not_redeemed = PromotionCode.objects.filter(email__isnull=True).count()
     if has_code_not_redeemed:
@@ -84,22 +85,27 @@ def promotion_winner_selection_api_view(request, slug):
             status=status.HTTP_403_FORBIDDEN,
         )
 
-    # check winner alread exists
-    has_winner = PromotionCode.objects.filter(is_winner=True).count()
-    if has_winner:
-        return Response(
-            {"error": "The lucky winner has been chosen."},
-            status=status.HTTP_403_FORBIDDEN,
-        )
+    data = request.data
+    promo_code = data["promo_code"]
+    try:
+        promotion = PromotionCode.objects.get(promo_code=promo_code)
+    except PromotionCode.DoesNotExist:
+        raise PromotionCodeNotFound
 
-    if request.method == "PUT":
-        promotion.is_winner = True
-        data = request.data
-        serializers = PromotionCodeSerializer(promotion, data, many=False)
-        serializers.is_valid(raise_exception=True)
-        serializers.save()
-        return Response(serializers.data)
-
+    if request.method == "POST":
+        user = request.user
+        email = data["email"]
+        try:
+            winner = PromotionCode.objects.get(Q(promo_code=promo_code) & Q(email=email))
+            winner.is_winner = True
+            winner.save()
+            serializers = PromotionCodeSerializer(winner, many=False)
+            logger.info(
+                f"Winner {serializers.data.get('promo_code')} has been selected by {user.email}"
+            )
+            return Response(serializers.data)
+        except PromotionCode.DoesNotExist:
+            raise PromotionCodeEmailNotFound
 
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
